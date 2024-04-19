@@ -13,7 +13,7 @@ import allusersDataSlice from './Slices/allUsers.js'
 const reducer = combineReducers({
   product: productSlice,
   cart: cartSlice,
-  order:OrderSlice,
+  order: OrderSlice,
   user: userSlice,
   favourite: favouriteSlice,
   usersData : allusersDataSlice,

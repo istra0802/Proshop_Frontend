@@ -60,14 +60,15 @@ const PlaceOrderScreen = ({ history }) => {
   };
 
   const dataa = [];
-  
 
   const placeOrderHandler = async () => {
+    console.log(cartItems, " cd")
     try {
+     
       const token = localStorage.getItem("token");
 
       const order = await completeOrderHandler({
-        cartItems: dataa,
+        cartItems: cartItems,
         shippingAddress,
         paymentMethod,
         itemsPrice,
@@ -83,53 +84,13 @@ const PlaceOrderScreen = ({ history }) => {
 
       toast(" Products ordered successfully ");
 
-      if (orderID) {
-        navigate(`/order/${order?.data?._id}`);
-      }
+      navigate(`/order`);
+      // if (orderID) {
+       
+      // }
     } catch (error) {
       toast(" Error in placing ordering ");
       console.log(" error ", error);
-    }
-  };
-
-  const createOrder = async () => {
-    const token = localStorage.getItem("token");
-    console.log("token", token);
-    try {
-      const response = await createOrderHandler(totalPrice)
-            
-      console.log("response from pay", response);
-      setOrderID(response.data.order_id);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handlePayment = async () => {
-    if (orderID) {
-      const options = {
-        key: "rzp_test_SKCq7lMIkCvIWp",
-        amount: totalPrice * 100,
-        currency: "INR",
-        name: "stellare bijoux",
-        description: "Test Transaction",
-        image: "",
-        order_id: orderID,
-        
-        prefill: {
-          name: "",
-          email: "",
-          contact: "",
-        },
-        notes: {
-          address: "Razorpay Corporate Office",
-        },
-        theme: {
-          color: "#454545",
-        },
-      };
-      const rzp = new window.Razorpay(options);
-      rzp.open();
     }
   };
 
@@ -252,22 +213,8 @@ const PlaceOrderScreen = ({ history }) => {
                 >
                   Place Order
                 </Button>
-                <Button
-                  type="button"
-                  onClick={createOrder}
-                  className="mt-2 btn-block"
-                >
-                  Create Order
-                </Button>
-                {orderID && (
-                  <Button
-                    type="button"
-                    onClick={handlePayment}
-                    className="mt-2 btn-block"
-                  >
-                    Proceed to Payment
-                  </Button>
-                )}
+               
+                
                 
               </ListGroup.Item>
             </ListGroup>
