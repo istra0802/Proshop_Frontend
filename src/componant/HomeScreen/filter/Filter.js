@@ -27,7 +27,8 @@ const Filter = ({ handleFilter }) => {
       <button
         type="button"
         onClick={handleShow}
-        className="btn btn-outline-secondary mt-3 border-start-0 bg-transparent text-dark"
+        className="btn outline-secondary  bg-transparent text-dark" 
+        style={{outlineStyle: "solid"}}
       >
         Filter
       </button>

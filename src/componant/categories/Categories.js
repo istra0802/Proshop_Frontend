@@ -19,8 +19,8 @@ const Categories = () => {
     },
     {
       id: 2,
-      title: t("category.mobilePhone"),
-      imageUrl: phone,
+      title: t("category.mouse"),
+      imageUrl: mouse,
     },
     {
       id: 3,
@@ -29,8 +29,8 @@ const Categories = () => {
     },
     {
       id: 4,
-      title: t("category.mouse"),
-      imageUrl: mouse,
+      title: t("category.mobilePhone"),
+      imageUrl: phone,
     },
     {
       id: 5,

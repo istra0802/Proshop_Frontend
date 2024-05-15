@@ -15,7 +15,8 @@ import RecentlyViewedProducts from "./RecentlyViewedProducts";
 import Categories from "../componant/categories/Categories";
 import Benefit from "../componant/Benefit";
 // import { Filter } from "@mui/icons-material";
-import Filter from "../componant/HomeScreen/filter/Filter"
+import Filter from "../componant/HomeScreen/filter/Filter";
+import Contact from "../componant/HomeScreen/Contact";
 // socket.on('hello', (res) => {
 //   toast.success(res.message)
 // })
@@ -28,12 +29,12 @@ const HomeScreen = () => {
   const products = productList.products;
   const [searchTerm, setSearchTerm] = useState("");
   const [sortOption, setSortOption] = useState("priceLowToHigh");
-  const [priceRange , setPriceRange] = useState([0,1000]);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
   const recentlyViewedIds =
     JSON.parse(localStorage.getItem("recentlyViewed")) || [];
   useEffect(() => {
     dispatch(listProducts());
-    console.log(dispatch(listProducts()),'==============================')
+    console.log(dispatch(listProducts()), "==============================");
     const params = new URLSearchParams(location.search);
     const searchQuery = params.get("search");
     if (searchQuery) {
@@ -51,23 +52,23 @@ const HomeScreen = () => {
   const handleFilter = useCallback((selectedPriceRange) => {
     setPriceRange(selectedPriceRange);
   }, []);
-  var sortedProducts=[]
- if(sortedProducts!=undefined){
-   sortedProducts = [...products].sort((a, b) => {
-    switch (sortOption) {
-      case "priceLowToHigh":
-        return a.price - b.price;
-      case "priceHighToLow":
-        return b.price - a.price;
-      case "nameAZ":
-        return a.name.localeCompare(b.name);
-      case "nameZA":
-        return b.name.localeCompare(a.name);
-      default:
-        return 0;
-    }
-  });
- }
+  var sortedProducts = [];
+  if (sortedProducts != undefined) {
+    sortedProducts = [...products].sort((a, b) => {
+      switch (sortOption) {
+        case "priceLowToHigh":
+          return a.price - b.price;
+        case "priceHighToLow":
+          return b.price - a.price;
+        case "nameAZ":
+          return a.name.localeCompare(b.name);
+        case "nameZA":
+          return b.name.localeCompare(a.name);
+        default:
+          return 0;
+      }
+    });
+  }
   const filteredProducts = sortedProducts.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -94,50 +95,50 @@ const HomeScreen = () => {
   }, [products]);
   return (
     <>
-      {/* Display message for low stock products */}
-      <Row className="mb-3">
-        <Col xs={12} lg={9} md="auto">
+      <Row className="mb-3 ">
+        <Col xs={4} lg={2} md={2} sm={3} xl={2} className="mt-3">
           <Filter handleFilter={handleFilter} />
         </Col>
-        <Col xs={12} lg={3} md="auto" className="mt-3">
-          <SortItems onSortChange={handleSortChange} />
-        </Col>
-      </Row>
-      <Row className="mb-3">
-        <Col xs={12} lg={9} md="auto">
-          <h1>Latest Products</h1>
-        </Col>
-        <Col xs={12} lg={3} md="auto">
+
+        <Col xs={8} lg={7} md={10} sm={9} xl={7}>
           <Form.Control
             type="text"
             placeholder="Search Products"
             value={searchTerm}
             onChange={handleSearch}
-            className="search-input"
-            style={{ width: calculateSearchBoxWidth() }}
+            className="search-input mt-3 outline-secondary border border-secondary rounded-3 text-dark"
+            style={{ width: calculateSearchBoxWidth(), outlineStyle: "solid", height:"48px" }}
           />
         </Col>
+        <Col xs={12} lg={3} md={12} sm={12}  xl={3} className="mt-3">
+          <SortItems onSortChange={handleSortChange} />
+        </Col>
       </Row>
+
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant="danger">{error}</Message>
       ) : (
         <>
-          <Row>
-            <Categories />
-          </Row>
           <h1>Latest Products</h1>
           <Row className="mb-5">
             {filteredProducts.slice(0, numProductsToShow).map((product) => (
-              <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Col key={product._id} className="col-12" sm={6} md={6} lg={4} xl={3} style={{marginBottom:"10px"}}>
                 <Product product={product} />
               </Col>
             ))}
           </Row>
           <Row>
+            <Categories />
+          </Row>
+          <Row>
             <Benefit />
           </Row>
+          <Row>
+            <Contact/>
+          </Row>
+
           {recentlyViewedIds.length === 0 ? (
             <></>
           ) : (
@@ -145,6 +146,7 @@ const HomeScreen = () => {
               <RecentlyViewedProducts />
             </Row>
           )}
+          
         </>
       )}
     </>

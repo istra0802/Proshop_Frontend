@@ -7,7 +7,7 @@ export default function SortItems({ onSortChange }) {
   };
   
     return (
-    <div className="d-flex justify-content-center mb-3">
+    <div className="d-flex text-dark outline-secondary border border-secondary rounded-3 justify-content-center mb-3" style={{outlineStyle: "solid"}}> 
       <select
         className="form-select"
         aria-label="Default select example"

@@ -135,7 +135,7 @@ const Product = ({ product }) => {
           </Button>
         )}
       </div>
-      <Card.Body style={{ flex: "0 0 auto" }}>
+      <Card.Body style={{ flex: "0 0 auto"  }}>
         <Link to={`/product/${product._id}`}>
           <Card.Title as="div">
             <strong>{product.name}</strong>

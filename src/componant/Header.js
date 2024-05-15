@@ -2,14 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { removeUser, loggedUserDetails } from "../Slices/userSlice";
-import CustomOffcanvas from "../screens/cart/cartComponent/OffCanvas"
+import CustomOffcanvas from "../screens/cart/cartComponent/OffCanvas";
 import "../scss/Header.scss";
 import { useNavigate } from "react-router-dom";
 import { cartlist, existedCartItem } from "../Slices/cartSlice";
 import { useTranslation } from "react-i18next";
 
 const Header = () => {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userLogin = useSelector((state) => state.user.userDetails);
@@ -19,13 +18,10 @@ const Header = () => {
   const [show, setShow] = useState(false);
   const { t, i18n } = useTranslation("global");
 
-  // console.log(userInfo.role, " user info role -----------------");
-
   useEffect(() => {
     dispatch(loggedUserDetails());
   }, [dispatch]);
 
-  // Effect for dispatching cartlist() when userInfo changes
   useEffect(() => {
     console.log("userInfo", userInfo);
     if (userInfo && Object.keys(userInfo).length > 0) {
@@ -43,14 +39,13 @@ const Header = () => {
     <header>
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
-        <Navbar.Brand className="col-md-2" href="/">
-        {t("header.brandName")}
-     
-      </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Brand className="col-2" href="/">
+            {t("header.brandName")}
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" className="me-3 border border-secondary text-secondary"/>
           <Navbar.Collapse
             id="basic-navbar-nav"
-            className="col-md-10 justify-content-end"
+            className="col-10  justify-content-end"
           >
             <Nav className="ms-auto">
               <Nav.Link href="/mainscreen">{t("header.home")}</Nav.Link>
@@ -63,28 +58,34 @@ const Header = () => {
                 <div>
                   {userInfo?.role === "admin" && (
                     <NavDropdown.Item href="/all-products">
-                    {t("header.allProducts")}
+                      {t("header.allProducts")}
                     </NavDropdown.Item>
                   )}
                   <NavDropdown.Item href="/favouriteScreen">
-                  {t("header.favourite")}
+                    {t("header.favourite")}
                   </NavDropdown.Item>
                   <NavDropdown.Item href="/all-products">
-                  {t("header.allProducts")}
-                </NavDropdown.Item>
-                <NavDropdown.Item href="/order">{t("header.orders")}</NavDropdown.Item>
-                <NavDropdown.Item href="/cart">{t("header.cart")}</NavDropdown.Item>
-                <NavDropdown.Item href="/profile">{t("header.profile")}</NavDropdown.Item>
-                <NavDropdown.Item href="/contact">
-                  {t("header.contactUs")}
-                </NavDropdown.Item>
+                    {t("header.allProducts")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/order">
+                    {t("header.orders")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/cart">
+                    {t("header.cart")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/profile">
+                    {t("header.profile")}
+                  </NavDropdown.Item>
+                  <NavDropdown.Item href="/contact">
+                    {t("header.contactUs")}
+                  </NavDropdown.Item>
                 </div>
               </NavDropdown>
               {userInfo && Object.keys(userInfo).length > 0 ? (
                 <Nav>
                   <NavDropdown title={userInfo.name} id="username">
                     <NavDropdown.Item onClick={handleLogout}>
-                    {t("header.signout")}
+                      {t("header.signout")}
                     </NavDropdown.Item>
                   </NavDropdown>
 
@@ -92,8 +93,13 @@ const Header = () => {
                     <Nav.Link href="/admin">{t("header.admin")}</Nav.Link>
                   ) : userInfo?.role === "merchant" ? (
                     <>
-                      <Nav.Link href="/merchant">{t("header.merchant")}</Nav.Link>
-                      <Nav.Link href="all-products"> {t("header.allProducts")}</Nav.Link>
+                      <Nav.Link href="/merchant">
+                        {t("header.merchant")}
+                      </Nav.Link>
+                      <Nav.Link href="all-products">
+                        {" "}
+                        {t("header.allProducts")}
+                      </Nav.Link>
                     </>
                   ) : (
                     <Nav.Link onClick={() => setShow(true)}>
@@ -115,7 +121,8 @@ const Header = () => {
                 </Nav>
               ) : (
                 <Nav.Link href="/login">
-                  <i className="fas fa-user"></i>{t("header.signin")}
+                  <i className="fas fa-user"></i>
+                  {t("header.signin")}
                 </Nav.Link>
               )}
             </Nav>

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Button } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Col, Row, Container } from "react-bootstrap";
 import { listProducts } from "../Slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../componant/Message";
 import Loader from "../componant/Loader";
 import AllProductForm from "../componant/allProductScreenCompo/AllProductListing";
-import UpdateModal from "../componant/allProductScreenCompo/AddEditModal";
-import Example from "../componant/HomeScreen/filter/Filter";
+// import UpdateModal from "../componant/allProductScreenCompo/AddEditModal";
+import Filter from "../componant/HomeScreen/filter/Filter";
 
 import { cartlist } from "../Slices/cartSlice";
 
@@ -15,7 +15,7 @@ const AllProductsScreen = () => {
   const item = useSelector((state) => state.product.productList);
   const { loading, error, products } = item;
 
-  const cartItems = useSelector((state) => state.cart.cartList.cartItems);
+  // const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
   useEffect(() => {
     // dispatch(existedCartItem());
@@ -23,35 +23,23 @@ const AllProductsScreen = () => {
     dispatch(listProducts());
   }, [dispatch]);
 
-  const [showModal, setShowModal] = useState(false);
-  const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+  // const [showModal, setShowModal] = useState(false);
+  // const handleShow = () => setShowModal(true);
+  // const handleClose = () => setShowModal(false);
 
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  // const [selectedProduct, setSelectedProduct] = useState(null);
   return (
     <Row>
       <Col>
-        <Row className="align-items-center ">
-          <Col md={4}>
-            <Example />
-          </Col>
-          <Col md={4}>
-            <h1>All Products</h1>
-          </Col>
-          {/* <Col md={4}>
-            <Button
-              type="button"
-              variant="dark"
-              className="m-2 border border-light float-right"
-              onClick={() => {
-                handleShow();
-                setAddBtn(true);
-                setSelectedProduct({});
-              }}
-            >
-              Add Product
-            </Button>
-          </Col> */}
+        <Row className="align-items-center mb-3">
+        
+            <Col lg={10} md={10} sm={9} className="col-8">
+              <h1 style={{ marginBottom: "0px" }}>All Products </h1>
+            </Col>
+            <Col lg={2} md={2} sm={2} className="col-4">
+              <Filter />
+            </Col>
+          
         </Row>
 
         {loading ? (
@@ -63,11 +51,6 @@ const AllProductsScreen = () => {
             <AllProductForm />
           </div>
         )}
-        <UpdateModal
-        
-          show={showModal}
-          handleClose={handleClose}
-        />
       </Col>
     </Row>
   );

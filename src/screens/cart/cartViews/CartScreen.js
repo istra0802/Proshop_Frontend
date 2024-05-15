@@ -9,16 +9,12 @@ import {
 } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  cartlist,
-   updateCart,
-} from "../../../Slices/cartSlice";
+import { cartlist, updateCart } from "../../../Slices/cartSlice";
 import Message from "../../../componant/Message";
 import "../../../scss/IncrementDecrementBtn.scss";
 import { useEffect } from "react";
 import { deleteFromCart } from "../cartFunction/deleteFromCart.js";
 import { updateCartQuantityHandler } from "../../../service/product.js";
-
 
 const CartScreen = () => {
   const dispatch = useDispatch();
@@ -32,7 +28,6 @@ const CartScreen = () => {
 
   const cartItems = useSelector((state) => state.cart.cartList.cartItems);
 
-  console.log(cartItems, " the items ");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,44 +47,51 @@ const CartScreen = () => {
   };
 
   const handleQtyChange = async (userId, productId, quantity) => {
-   
     try {
-      
       const response = await updateCartQuantityHandler({
         userId,
         productId,
         newQuantity: quantity,
-      })
-      
-      
+      });
+
       dispatch(updateCart(response?.data?.changedItems));
     } catch (error) {
       console.log("error t o  seee ", error);
     }
   };
 
+  // Inside your component...
 
-// Inside your component...
+  const handleDeleteFromCart = async (userId, productId) => {
+    await deleteFromCart(userId, productId, dispatch);
+  };
 
-const handleDeleteFromCart = async (userId, productId) => {
-  await deleteFromCart(userId, productId, dispatch);
-};
-
-
-  console.log("cartItems", cartItems);
   return (
     <Row>
-      <Col md={8}>
+      <Col md={12}>
         <h1>Shopping Cart</h1>
         {cartItems.length === 0 ? (
           <Message>
             Your cart is empty<Link to="/">Go Back</Link>
           </Message>
         ) : (
-          <ListGroup variant="flush">
+          <ListGroup>
+            <ListGroup.Item>
+              <h2>
+                Subtotal (
+                {cartItems.reduce((acc, item) => acc + item?.quantity, 0)})
+                items
+              </h2>
+              {cartItems
+                .reduce(
+                  (acc, item) => acc + item?.quantity * item?.product?.price,
+                  0
+                )
+                .toFixed(2)}
+            </ListGroup.Item>
             {cartItems?.map((item) => (
               <ListGroup.Item key={item.product?._id}>
-                <Row>
+                <Row className="align-items-center">
                   <Col md={2}>
                     <Image
                       src={item?.product?.image}
@@ -98,7 +100,7 @@ const handleDeleteFromCart = async (userId, productId) => {
                       rounded
                     />
                   </Col>
-                  <Col md={3}>
+                  <Col md={4}>
                     <Link to={`/product/${item?.product?._id}`}>
                       {item?.product?.name}
                     </Link>
@@ -126,7 +128,7 @@ const handleDeleteFromCart = async (userId, productId) => {
                       )}
                     </Form.Control>
                   </Col>
-                  <Col md={2}>
+                  <Col md={1}>
                     <Button
                       type="button"
                       variant="light"
@@ -136,15 +138,24 @@ const handleDeleteFromCart = async (userId, productId) => {
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
-                    
                   </Col>
                 </Row>
               </ListGroup.Item>
             ))}
+            <ListGroup.Item>
+              <Button
+                type="button"
+                className="btn-block"
+                disabled={cartItems.length === 0}
+                onClick={checkOutHandler}
+              >
+                Check Out
+              </Button>
+            </ListGroup.Item>
           </ListGroup>
         )}
       </Col>
-      <Col md={4}>
+      {/* <Col md={4}>
         <Card>
           <ListGroup variant="flush">
             <ListGroup.Item>
@@ -167,12 +178,12 @@ const handleDeleteFromCart = async (userId, productId) => {
                 disabled={cartItems.length === 0}
                 onClick={checkOutHandler}
               >
-                Proceed to Check Out
+                Check Out
               </Button>
             </ListGroup.Item>
           </ListGroup>
         </Card>
-      </Col>
+      </Col> */}
     </Row>
   );
 };
